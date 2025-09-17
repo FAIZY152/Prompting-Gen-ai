@@ -46,20 +46,63 @@ message=[
             "role":"user",
             "content":"What is 3 + 4 * 8 / 2 ?"
         }
+        ,
+        {
+            "role":"assistant",
+             "content":json.dumps({
+            "step": "analyse",
+            "content": "The user is asking a mathematical expression involving addition, multiplication, and division. The expression contains multiple operators with different precedences, which need to be evaluated in the correct order."
+            })
+        }, 
+        {
+            "role":"assistant",
+             "content":json.dumps({
+                 
+                "step": "think",
+                "content": "To evaluate the expression 3 + 4 * 8 / 2, I need to follow the order of operations (PEMDAS/BODMAS), which dictates that I should perform calculations in the following order: Parentheses, Exponents, Multiplication and Division (from left to right), and Addition and Subtraction (from left to right). This means I should first perform the multiplication and then the division before finally adding the result to 3."
+                })
+        }, 
+        {
+            "role":"assistant",
+                "content":json.dumps({
+                "step": "think",
+                "content": "Breaking it down further, I should calculate the multiplication 4 * 8 first, which equals 32, and then perform the division 32 / 2, which equals 16. After that, I can add 3 to the result to get the final answer."
+                })
+        }, 
+        {
+            "role":"assistant",
+            "content":json.dumps({
+            "step": "think",
+            "content": """Another approach is to think about the expression in terms of the operator precedence. Multiplication and division have higher precedence than addition, so 
+            they should be performed first. Also, since multiplication and division have the same precedence, they should be performed from left to right."""
+            })
+        }, 
+        {
+            "role":"assistant",
+            "content":json.dumps({
+            "step": "think",
+            "content": "Let's perform the multiplication first: 4 * 8 = 32. Now the expression becomes 3 + 32 / 2. Then perform the division: 32 / 2 = 16. Now the expression becomes 3 + 16."
+            })
+        }, 
+        {
+            "role":"assistant",
+            "content":json.dumps({
+           "step": "output",
+            "content": "19"
+             })
+        }, 
+  
+
 ]
 def main():
-    while True:
-        chat_completion = client.chat.completions.create(
+    
+    chat_completion = client.chat.completions.create(
+    response_format={"type": "json_object"},
     messages=message,
     model="llama-3.3-70b-versatile",
     
 )
-    
-    
-    
     print(chat_completion.choices[0].message.content)
-
-
 
 main()
 
