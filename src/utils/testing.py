@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()  
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
+print(client)
+
 system_prompt = """
 You are an AI assistant who is expert in breaking down complex problems and then resolve the user query.
 
@@ -35,21 +37,26 @@ Output: {{ step: "result", content: "2 + 2 = 4 and that is calculated by adding 
 
 """
 
-
-def main():
-    chat_completion = client.chat.completions.create(
-    messages=[
-        {
+message=[
+{
             "role": "system",
             "content": system_prompt,
         }, 
         {
             "role":"user",
-            "content":"What is 12 * 12 ?"
+            "content":"What is 3 + 4 * 8 / 2 ?"
         }
-    ],
+]
+def main():
+    while True:
+        chat_completion = client.chat.completions.create(
+    messages=message,
     model="llama-3.3-70b-versatile",
+    
 )
+    
+    
+    
     print(chat_completion.choices[0].message.content)
 
 
